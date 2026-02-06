@@ -956,96 +956,94 @@ docker exec -i moodle_db mysql -u moodleuser -pmoodlepassword moodle < backup_20
 **1. อธิบายความแตกต่างระหว่าง Docker Image และ Docker Container พร้อมยกตัวอย่าง**
 
 คำตอบ:
-```
-
-```
+Docker Image คือแม่แบบ (Template) ที่บรรจุโปรแกรม ไลบรารี และการตั้งค่าที่จำเป็นไว้แล้ว ส่วน Docker Container คือการนำ Image มารันให้ทำงานจริง
+ตัวอย่าง: Image เปรียบเหมือนไฟล์ติดตั้งโปรแกรม ส่วน Container เปรียบเหมือนโปรแกรมที่ถูกเปิดใช้งานแล้ว เช่น Image ของ Moodle เมื่อรันจะกลายเป็น Container Moodle
 
 **2. จากสถาปัตยกรรมในการทดลอง มี Container กี่ตัว? แต่ละตัวมีหน้าที่อะไร?**
 
 คำตอบ:
-```
+โดยทั่วไปมี 2 ตัว
 
-```
+1. moodle_app – ทำหน้าที่รันระบบ Moodle (Web Application)
+
+2. db – ทำหน้าที่เป็นฐานข้อมูล (เช่น MySQL/MariaDB) สำหรับเก็บข้อมูลผู้ใช้ รายวิชา และคะแนน
 
 **3. จากการทดลองมีการจัดการ Volume แบบใด มีข้อดีข้อเสียอย่างไร?**
 
 คำตอบ:
-```
+ใช้ Docker Volume
 
-```
+ข้อดี: ข้อมูลไม่หายเมื่อ Container หยุดหรือถูกลบ และสามารถนำไปใช้ซ้ำได้
+
+ข้อเสีย: ต้องจัดการ Volume ให้ถูกต้อง หากสั่งลบ Volume ข้อมูลจะหายทั้งหมด
 
 **4. Network ใน Docker Compose ทำหน้าที่อะไร? Container สื่อสารกันอย่างไร?**
 
 คำตอบ:
-```
-
-
-```
-
+Network ทำหน้าที่เชื่อมต่อ Container ให้สามารถสื่อสารกันได้ โดย Container จะสื่อสารกันผ่าน ชื่อ service เช่น db แทนการใช้ IP Address
 
 **5. `depends_on` ในไฟล์ docker-compose.yml มีความสำคัญอย่างไร?**
 
 คำตอบ:
-```
-
-```
+depends_on ใช้กำหนดลำดับการเริ่มต้นของ Container เช่น ให้ moodle_app เริ่มหลังจาก db เพื่อป้องกันปัญหาแอปเชื่อมต่อฐานข้อมูลไม่ทัน
 
 **6. ถ้าต้องการเปลี่ยน Port ของ Moodle  เป็น 9000 ต้องแก้ไขส่วนใดของไฟล์?**
 
 คำตอบ:
-```
-
-
-```
+แก้ไขในส่วน ports ของ service moodle_app
 
 **7. Environment Variables `MOODLE_DB_HOST=db` หมายความว่าอย่างไร? ทำไมไม่ใช้ `localhost`?**
 
 คำตอบ:
-```
-
-```
+หมายถึงให้ Moodle เชื่อมต่อฐานข้อมูลที่ Container ชื่อ db
+ไม่ใช้ localhost เพราะ localhost ใน Docker หมายถึง Container ตัวเอง ไม่ใช่ Container อื่น
 
 
 **8. เปรียบเทียบข้อดีและข้อเสียของการติดตั้ง Moodle ด้วย Docker เทียบกับการติดตั้งแบบปกติ**
 
 คำตอบ:
-```
+Docker
 
-```
+ข้อดี: ติดตั้งง่าย รวดเร็ว ย้ายเครื่องได้สะดวก
+
+ข้อเสีย: ต้องเข้าใจ Docker และการจัดการ Container
+
+ติดตั้งปกติ
+
+ข้อดี: ควบคุมระบบได้ละเอียด
+
+ข้อเสีย: ติดตั้งซับซ้อน ใช้เวลานาน และย้ายระบบยาก
 
 **9. ถ้าต้องการเพิ่ม Container Redis สำหรับ Caching จะต้องแก้ไข docker-compose.yml อย่างไร?**
 
 คำตอบ (เขียน YAML):
-```yaml
 
+<img width="260" height="215" alt="image" src="https://github.com/user-attachments/assets/41cfb29c-6b81-496f-a13d-9a95ab6849d2" />
 
-
-
-
-
-
-
-```
 
 
 **10. ถ้า Container moodle_app ไม่สามารถเชื่อมต่อ Database ได้ จะตรวจสอบและแก้ไขอย่างไร?**
 
-คำตอบ:
-```
 วิธีตรวจสอบ:
 
+ตรวจสอบ log ด้วย docker-compose logs moodle_app
+
+ตรวจสอบว่า Container db รันอยู่หรือไม่
+
+ตรวจสอบค่า Environment Variables
 
 วิธีแก้ไข:
 
-```
+แก้ไขชื่อ DB_HOST ให้ตรงกับ service
+
+ใช้ depends_on
+
+รีสตาร์ท Container ด้วย docker-compose restart
 
 **11. ถ้ารัน `docker-compose down -v` จะเกิดอะไรขึ้นกับข้อมูล?**
 
 คำตอบ:
-```
-
-
-```
+Container และ Volume จะถูกลบทั้งหมด ทำให้ข้อมูลในฐานข้อมูลและไฟล์ที่เก็บใน Volume หายถาวร
 
 ---
 
