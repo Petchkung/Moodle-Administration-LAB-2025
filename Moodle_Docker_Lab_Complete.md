@@ -329,6 +329,8 @@ docker pull mariadb:latest
 ```
 
 **บันทึกผลการทดลอง 1:**
+
+
 <img width="738" height="127" alt="image" src="https://github.com/user-attachments/assets/d9c68996-d1a7-475e-a63a-bd44c436ae80" />
 
 <img width="792" height="171" alt="image" src="https://github.com/user-attachments/assets/15107b8c-7db6-4fc0-88bc-9697e9fee589" />
