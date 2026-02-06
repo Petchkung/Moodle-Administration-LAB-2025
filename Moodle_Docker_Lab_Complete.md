@@ -249,7 +249,8 @@ services:
     restart: unless-stopped
 
   moodle:
-    image: lthub/moodle:education-4.5.8  # หากไม่สามารถโหลด image นี้ได้ ให้ลองใช้ lthub/moodle:latest
+    image: lthub/moodle:education-4.5.8  # หากไม่สามารถโหลด image นี้ได้ ให้ลองใช้ lthub/moodle:latest หรือระบุ platform ตามบรรทัดด้านล่าง
+    #platform: linux/arm64   # กรณีใช้บน Macbook สามารถใช้ image lthub/moodle:education-4.5.8 ได้ โดยระบุ platform (เอาเครื่องหมาย # ด้านหน้าออก)
     container_name: moodle_app
     ports:
       - "80:80" # กรณีที่เครื่องมี Web Server ที่ใช้งาน Port 80 อยู่แล้ว ให้เปลี่ยน Port เป็น "8080:80"  และการใช้งานต้องระบุ Port เป็น //localhost:8080
@@ -259,6 +260,7 @@ services:
       MOODLE_DB_NAME: moodle
       MOODLE_DB_USER: moodleuser
       MOODLE_DB_PASSWORD: moodlepassword # แก้ไขรหัสผ่านให้เป็นของตนเอง ให้ตรงกับรหัสผ่าน MYSQL_PASSWORD ด้านบน
+      
     volumes:
       - moodledata:/moodledata
     depends_on:
@@ -291,6 +293,7 @@ volumes:
 - `MYSQL_PASSWORD`: password สำหรับ Moodle
 - `MOODLE_DB_TYPE`: ชนิดของ database
 - `MOODLE_DB_HOST`: ชื่อ hostname ของ database (ชี้ไปที่ service `db`)
+- `MOODLE_URL`: http://localhost
 
 **Volumes:**
 - `db_data`: เก็บข้อมูล MariaDB
