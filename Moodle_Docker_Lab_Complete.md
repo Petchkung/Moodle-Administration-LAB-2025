@@ -409,9 +409,10 @@ docker start moodle_app
 
 ```
 **บันทึกผลการทดลอง 4:**
-```bash
- รูปผลการรัน docker-compose logs 
-```
+
+
+<img width="1094" height="245" alt="image" src="https://github.com/user-attachments/assets/c47b3689-6b2d-4886-bbbb-90919e2383e7" />
+
 
 #### 2.5 ตรวจสอบ Network และ Volumes
 
